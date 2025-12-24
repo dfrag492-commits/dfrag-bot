@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ᴅғʀᴀɢ ʙᴏᴛ - Ultimate Access</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#0a0a0c">
+    <link rel="apple-touch-icon" href="perfil.png">
+    <style>
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff00e6; --neon-green: #39ff14; --bg-dark: #0a0a0c; --card-bg: #16161a; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: #e0e0e0; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { text-align: center; padding: 40px; border: 1px solid var(--neon-blue); border-radius: 20px; box-shadow: 0 0 20px var(--neon-blue); }
+        input[type="password"] { background: #000; border: 1px solid var(--neon-pink); color: white; padding: 10px; border-radius: 5px; text-align: center; margin-top: 20px; outline: none; }
+        #app-content { display: none; width: 95%; max-width: 500px; padding: 20px 0; }
+        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; border: 1px solid #333; text-align: center; box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--neon-blue); margin-bottom: 10px; object-fit: cover; }
+        h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 3px; margin: 10px 0; font-size: 1.8em; }
+        #upload-label { display: inline-block; padding: 12px 30px; background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink)); color: white; border-radius: 50px; cursor: pointer; font-weight: bold; margin-bottom: 10px; }
+        canvas { display: block; margin: 15px auto; border: 1px solid #333; background: #000; max-width: 120px; }
+        #output { background: #000; color: var(--neon-blue); height: 120px; overflow-y: scroll; padding: 10px; font-family: monospace; font-size: 10px; text-align: left; border-radius: 10px; margin-top: 15px; white-space: pre-wrap; }
+        .btn { margin-top: 15px; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; text-transform: uppercase; transition: 0.3s; border: none; }
+        .btn-copy { background: transparent; color: var(--neon-pink); border: 2px solid var(--neon-pink); }
+        .btn-copy:hover { background: var(--neon-pink); color: white; }
+        .btn-launch { background: transparent; color: var(--neon-green); border: 2px solid var(--neon-green); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-launch:hover { background: var(--neon-green); color: black; box-shadow: 0 0 20px var(--neon-green); }
+    </style>
+</head>
+<body>
+<div id="login-screen">
+    <div class="login-box">
+        <h1>ACCESS DENIED</h1>
+        <p>CHAVE MESTRA DO ᴅғʀᴀɢ ʙᴏᴛ</p>
+        <input type="password" id="passInput" placeholder="Sua Senha">
+        <br>
+        <button class="btn btn-copy" onclick="checkPass()">DESBLOQUEAR</button>
+    </div>
+</div>
+<div id="app-content">
+    <div class="container">
+        <img src="perfil.png" alt="ᴅғʀᴀɢ ʙᴏᴛ" class="profile-img">
+        <h1>ᴅғʀᴀɢ ʙᴏᴛ</h1>
+        <label id="upload-label" for="upload">CARREGAR IMAGEM</label>
+        <input type="file" id="upload" accept="image/*">
+        <canvas id="canvas"></canvas>
+        <div id="output">CÓDIGO OTIMIZADO...</div>
+        <button class="btn btn-copy" onclick="copyToClipboard()">1. COPIAR CÓDIGO</button>
+        <button class="btn btn-launch" onclick="launchGame()">2. LANÇAR FR LEGENDS 🏎️💨</button>
+    </div>
+</div>
+<script>
+    const SENHA_MESTRA = "dfragfrl"; 
+    function checkPass() { if(document.getElementById('passInput').value === SENHA_MESTRA) { document.getElementById('login-screen').style.display = 'none'; document.getElementById('app-content').style.display = 'block'; } else { alert("ACESSO NEGADO."); } }
+    function launchGame() { window.location.href = "frlegends://"; setTimeout(() => { alert("Se o jogo não abrir, entre manualmente. O código já está copiado!"); }, 2000); }
+    const upload = document.getElementById('upload'), canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d'), output = document.getElementById('output');
+    upload.addEventListener('change', (e) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const MAX_DIM = 35; let w = img.width, h = img.height;
+                if (w > h) { if (w > MAX_DIM) { h *= MAX_DIM / w; w = MAX_DIM; } } else { if (h > MAX_DIM) { w *= MAX_DIM / h; h = MAX_DIM; } }
+                canvas.width = Math.floor(w); canvas.height = Math.floor(h);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let frCode = "";
+                for (let y = 0; y < canvas.height; y++) {
+                    for (let x = 0; x < canvas.width; x++) {
+                        let i = (y * canvas.width + x) * 4;
+                        if (data[i+3] > 150) {
+                            let hex = ((data[i] << 16) | (data[i+1] << 8) | data[i+2]).toString(16).padStart(6, '0').toUpperCase();
+                            let startX = x;
+                            while (x + 1 < canvas.width) {
+                                let nextI = (y * canvas.width + (x + 1)) * 4;
+                                if (data[nextI+3] > 150 && data[nextI] === data[i] && data[nextI+1] === data[i+1] && data[nextI+2] === data[i+2]) { x++; } else { break; }
+                            }
+                            let len = (x - startX + 1);
+                            let scX = len * 5, pX = (startX + (len / 2) - canvas.width / 2) * 5, pY = (y - canvas.height / 2) * 5;
+                            frCode += `0002${hex}0000${pX.toFixed(0).padStart(4,'0')}${pY.toFixed(0).padStart(4,'0')}00${scX.toFixed(0).padStart(2,'0')}000500000064\n`;
+                        }
+                    }
+                }
+                output.innerText = frCode;
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    });
+    function copyToClipboard() { navigator.clipboard.writeText(output.innerText).then(() => alert("CÓDIGO COPIADO!")); }
+</script>
+</body>
+</html>
