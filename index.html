@@ -60,7 +60,8 @@
         reader.onload = (event) => {
             const img = new Image();
             img.onload = () => {
-                const MAX_DIM = 35; let w = img.width, h = img.height;
+                const MAX_DIM = 25; // Resolução segura para evitar erro de limite
+                let w = img.width, h = img.height;
                 if (w > h) { if (w > MAX_DIM) { h *= MAX_DIM / w; w = MAX_DIM; } } else { if (h > MAX_DIM) { w *= MAX_DIM / h; h = MAX_DIM; } }
                 canvas.width = Math.floor(w); canvas.height = Math.floor(h);
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -77,8 +78,11 @@
                                 if (data[nextI+3] > 150 && data[nextI] === data[i] && data[nextI+1] === data[i+1] && data[nextI+2] === data[i+2]) { x++; } else { break; }
                             }
                             let len = (x - startX + 1);
-                            let scX = len * 5, pX = (startX + (len / 2) - canvas.width / 2) * 5, pY = (y - canvas.height / 2) * 5;
-                            frCode += `0002${hex}0000${pX.toFixed(0).padStart(4,'0')}${pY.toFixed(0).padStart(4,'0')}00${scX.toFixed(0).padStart(2,'0')}000500000064\n`;
+                            let scX = len * 5;
+                            // Coordenadas absolutas positivas para o FR Legends
+                            let pX = Math.floor((startX + (len / 2)) * 10);
+                            let pY = Math.floor(y * 10);
+                            frCode += `0002${hex}0000${pX.toString().slice(-4).padStart(4,'0')}${pY.toString().slice(-4).padStart(4,'0')}00${scX.toFixed(0).padStart(2,'0')}000500000064\n`;
                         }
                     }
                 }
@@ -92,4 +96,3 @@
 </script>
 </body>
 </html>
-
